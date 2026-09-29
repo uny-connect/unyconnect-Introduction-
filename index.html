@@ -139,7 +139,6 @@
   </div>
 
   <script>
-    // ⭐ [필수 입력] 구글 앱스 스크립트 웹 앱 URL을 아래 따옴표 안에 넣어주세요!
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzzlalBPNY7TglmfD4CFt3-CCS6eqKiuEGzE5J8QUjHX1695a7l2tQKNTpIDTxMLFSzNg/exec";
 
     const totalSlides = 12;
@@ -196,7 +195,7 @@
       mainImg.alt = `슬라이드 ${currentIndex}`;
       document.getElementById("page-num").innerText = `${currentIndex} / ${totalSlides}`;
 
-      // 특정 슬라이드 클릭 링크 보이기/숨기기
+      // 5번, 7번 슬라이드 링크 레이어 토글
       const link5 = document.getElementById("link-slide-5");
       const link7 = document.getElementById("link-slide-7");
       if (currentIndex === 5) { link5.classList.remove("hidden"); } else { link5.classList.add("hidden"); }
@@ -217,7 +216,7 @@
       if (currentIndex < totalSlides) goToSlide(currentIndex + 1);
     }
 
-    // 마우스 휠 스크롤 이동
+    // 마우스 휠 스크롤 제어
     let isWheeling = false;
     window.addEventListener("wheel", (e) => {
       if (!document.getElementById("contact-modal").classList.contains("hidden")) return;
@@ -235,14 +234,14 @@
       setTimeout(() => { isWheeling = false; }, 300);
     }, { passive: true });
 
-    // 키보드 방향키 이동
+    // 키보드 방향키 제어
     window.addEventListener("keydown", (e) => {
       if (!document.getElementById("contact-modal").classList.contains("hidden")) return;
       if (e.key === "ArrowLeft" || e.key === "ArrowUp") prevSlide();
       if (e.key === "ArrowRight" || e.key === "ArrowDown") nextSlide();
     });
 
-    // 모바일 터치 스와이프
+    // 모바일 터치 스와이프 제어
     let touchStartX = 0;
     const viewer = document.getElementById("main-viewer");
     viewer.addEventListener("touchstart", (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
@@ -252,7 +251,7 @@
       if (touchEndX - touchStartX > 50) prevSlide();
     }, { passive: true });
 
-    // 모달 열기/닫기
+    // 모달 제어
     function openModal() {
       document.getElementById("contact-modal").classList.remove("hidden");
     }
@@ -260,7 +259,7 @@
       document.getElementById("contact-modal").classList.add("hidden");
     }
 
-    // 구글 스프레드시트로 문의 내용 전송하는 함수
+    // 구글 시트 연동 전송 처리
     function handleInquirySubmit(e) {
       e.preventDefault();
       
@@ -271,6 +270,7 @@
       submitBtn.innerText = "전송 중...";
 
       const payload = {
+        source: "회사소개서 뷰어", // 유입 출처 자동 표기
         company: document.getElementById("company").value,
         name: document.getElementById("name").value,
         phone: document.getElementById("phone").value,
@@ -290,7 +290,7 @@
         closeModal();
       })
       .catch(err => {
-        alert("문의가 접수되었습니다. 확인 후 신속히 안내해 드리겠습니다.");
+        alert("문의가 정상 접수되었습니다. 확인 후 신속히 안내해 드리겠습니다.");
         e.target.reset();
         closeModal();
       })
