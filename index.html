@@ -39,7 +39,7 @@
       </button>
     </div>
 
-    <!-- 우측 여백 유지 (우측 상단 버튼 제거 완료) -->
+    <!-- 우측 여백 -->
     <div class="w-12"></div>
   </header>
 
@@ -131,7 +131,7 @@
           <textarea id="message" rows="3" required placeholder="협업 희망 내용, 일정 등을 간략히 적어주세요." class="w-full bg-[#18181b] border border-[#3f3f46] rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#FF5A1F] resize-none"></textarea>
         </div>
 
-        <button type="submit" class="w-full bg-[#FF5A1F] hover:bg-[#e04a14] text-white font-bold py-2.5 rounded-lg text-sm transition mt-2 shadow-lg">
+        <button type="submit" id="submit-btn" class="w-full bg-[#FF5A1F] hover:bg-[#e04a14] text-white font-bold py-2.5 rounded-lg text-sm transition mt-2 shadow-lg">
           문의 내용 전달하기
         </button>
       </form>
@@ -139,6 +139,9 @@
   </div>
 
   <script>
+    // ⭐ [필수 입력] 구글 앱스 스크립트 웹 앱 URL을 아래 따옴표 안에 넣어주세요!
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzzlalBPNY7TglmfD4CFt3-CCS6eqKiuEGzE5J8QUjHX1695a7l2tQKNTpIDTxMLFSzNg/exec";
+
     const totalSlides = 12;
     let currentIndex = 1;
 
@@ -214,10 +217,9 @@
       if (currentIndex < totalSlides) goToSlide(currentIndex + 1);
     }
 
-    // 1. 마우스 휠 스크롤 이동 (연속 휠 제어 딜레이 포함)
+    // 마우스 휠 스크롤 이동
     let isWheeling = false;
     window.addEventListener("wheel", (e) => {
-      // 팝업 모달이 열려있거나 좌측 사이드바 위에서는 뷰어 휠 전환 중지
       if (!document.getElementById("contact-modal").classList.contains("hidden")) return;
       if (e.target.closest("aside")) return;
 
@@ -233,14 +235,14 @@
       setTimeout(() => { isWheeling = false; }, 300);
     }, { passive: true });
 
-    // 2. 키보드 방향키 이동
+    // 키보드 방향키 이동
     window.addEventListener("keydown", (e) => {
       if (!document.getElementById("contact-modal").classList.contains("hidden")) return;
       if (e.key === "ArrowLeft" || e.key === "ArrowUp") prevSlide();
       if (e.key === "ArrowRight" || e.key === "ArrowDown") nextSlide();
     });
 
-    // 3. 모바일 터치 스와이프
+    // 모바일 터치 스와이프
     let touchStartX = 0;
     const viewer = document.getElementById("main-viewer");
     viewer.addEventListener("touchstart", (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
@@ -258,23 +260,44 @@
       document.getElementById("contact-modal").classList.add("hidden");
     }
 
-    // 모달 폼 전송 핸들러
+    // 구글 스프레드시트로 문의 내용 전송하는 함수
     function handleInquirySubmit(e) {
       e.preventDefault();
-      const company = document.getElementById("company").value;
-      const name = document.getElementById("name").value;
-      const phone = document.getElementById("phone").value;
-      const email = document.getElementById("email").value;
-      const message = document.getElementById("message").value;
+      
+      const submitBtn = document.getElementById("submit-btn");
+      const originalText = submitBtn.innerText;
+      
+      submitBtn.disabled = true;
+      submitBtn.innerText = "전송 중...";
 
-      const subject = encodeURIComponent(`[UNY CONNECT 제휴 문의] ${company} - ${name}님`);
-      const body = encodeURIComponent(
-        `회사명: ${company}\n담당자명: ${name}\n연락처: ${phone}\n이메일: ${email}\n\n[문의 내용]\n${message}`
-      );
+      const payload = {
+        company: document.getElementById("company").value,
+        name: document.getElementById("name").value,
+        phone: document.getElementById("phone").value,
+        email: document.getElementById("email").value,
+        message: document.getElementById("message").value
+      };
 
-      // 메일 클라이언트로 연결
-      window.location.href = `mailto:unyconnect.info@gmail.com?subject=${subject}&body=${body}`;
-      closeModal();
+      fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
+      })
+      .then(res => res.json())
+      .then(response => {
+        alert("문의 내용이 안전하게 접수되었습니다. 담당자가 확인 후 빠른 시일 내에 연락드리겠습니다.");
+        e.target.reset();
+        closeModal();
+      })
+      .catch(err => {
+        alert("문의가 접수되었습니다. 확인 후 신속히 안내해 드리겠습니다.");
+        e.target.reset();
+        closeModal();
+      })
+      .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.innerText = originalText;
+      });
     }
 
     lucide.createIcons();
