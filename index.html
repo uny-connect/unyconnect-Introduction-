@@ -15,21 +15,20 @@
 
   <style>
     body { font-family: 'Pretendard', sans-serif; }
-    /* 슬라이드 썸네일 스크롤바 숨기기/슬림화 */
     .sidebar-scroll::-webkit-scrollbar { width: 5px; }
-    .sidebar-scroll::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+    .sidebar-scroll::-webkit-scrollbar-thumb { background: #52525b; border-radius: 4px; }
   </style>
 </head>
 <body class="bg-[#18181b] text-gray-100 h-screen w-screen overflow-hidden flex flex-col">
 
-  <!-- 상단 헤더 / 컨트롤 바 -->
+  <!-- 상단 헤더 / 네비게이션 -->
   <header class="h-14 bg-[#27272a] border-b border-[#3f3f46] px-4 flex items-center justify-between z-20 flex-shrink-0">
     <div class="flex items-center gap-3">
       <span class="font-extrabold text-lg tracking-tight text-white">UNY <span class="text-[#FF5A1F]">CONNECT</span></span>
       <span class="text-xs bg-[#3f3f46] text-gray-300 px-2 py-0.5 rounded">회사소개서 2026</span>
     </div>
 
-    <!-- 페이지 넘김 인디케이터 -->
+    <!-- 페이지 이동 컨트롤 -->
     <div class="flex items-center gap-2">
       <button onclick="prevSlide()" class="p-1.5 rounded hover:bg-[#3f3f46] text-gray-300 hover:text-white transition">
         <i data-lucide="chevron-left" class="w-5 h-5"></i>
@@ -40,60 +39,58 @@
       </button>
     </div>
 
-    <!-- 우측 링크 & 다운로드 액션 -->
+    <!-- 우측 링크 & 액션 버튼 -->
     <div class="flex items-center gap-2">
       <a href="https://bookmarkjp.com/bookmarkcreators" target="_blank" class="hidden sm:inline-flex items-center gap-1 text-xs bg-[#3f3f46] hover:bg-[#52525b] text-white px-3 py-1.5 rounded-lg transition font-medium">
         크리에이터즈 <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
       </a>
-      <a href="slide-1.jpg" id="btn-download" download="UNY_CONNECT_회사소개서.pdf" class="inline-flex items-center gap-1.5 text-xs bg-[#FF5A1F] hover:bg-[#e04a14] text-white font-semibold px-3 py-1.5 rounded-lg transition shadow">
-        <i data-lucide="download" class="w-3.5 h-3.5"></i> PDF 다운로드
+      <a href="mailto:unyconnect.info@gmail.com" class="inline-flex items-center gap-1.5 text-xs bg-[#FF5A1F] hover:bg-[#e04a14] text-white font-semibold px-3 py-1.5 rounded-lg transition shadow">
+        <i data-lucide="mail" class="w-3.5 h-3.5"></i> 문의하기
       </a>
     </div>
   </header>
 
-  <!-- 메인 영역: 좌측 썸네일 + 우측 슬라이드 뷰어 -->
+  <!-- 메인 영역 -->
   <div class="flex-1 flex overflow-hidden">
     
-    <!-- 1. 좌측 썸네일 리스트 (데스크톱) -->
+    <!-- 좌측 슬라이드 썸네일 리스트 -->
     <aside class="w-64 bg-[#202023] border-r border-[#3f3f46] overflow-y-auto sidebar-scroll hidden md:flex flex-col p-3 gap-3 flex-shrink-0">
       <div class="text-xs font-bold text-gray-400 px-1 py-1 uppercase tracking-wider">Index & Slides</div>
-      <div id="thumbnail-container" class="flex flex-col gap-3">
-        <!-- JS로 12개 썸네일 자동 생성 -->
-      </div>
+      <div id="thumbnail-container" class="flex flex-col gap-3"></div>
     </aside>
 
-    <!-- 2. 우측 슬라이드 뷰어 메인 영역 -->
+    <!-- 우측 메인 뷰어 -->
     <main class="flex-1 bg-[#121214] relative flex items-center justify-center p-3 md:p-6 overflow-hidden select-none" id="main-viewer">
       
-      <!-- 이전/다음 클릭 영역 (좌우 버튼) -->
-      <button onclick="prevSlide()" class="absolute left-4 z-10 w-12 h-12 rounded-full bg-black/40 hover:bg-black/80 text-white flex items-center justify-center transition backdrop-blur-sm shadow-lg">
+      <!-- 이전 버튼 -->
+      <button onclick="prevSlide()" class="absolute left-4 z-10 w-12 h-12 rounded-full bg-black/50 hover:bg-black/80 text-white flex items-center justify-center transition backdrop-blur-sm shadow-lg">
         <i data-lucide="chevron-left" class="w-7 h-7"></i>
       </button>
 
       <!-- 슬라이드 메인 이미지 프레임 -->
       <div class="w-full h-full max-w-[1400px] max-h-[850px] flex items-center justify-center">
-        <img id="main-slide-img" src="slide-1.jpg" alt="슬라이드 1" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl transition duration-200">
+        <img id="main-slide-img" src="slide-1.png" alt="슬라이드 1" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl transition duration-150">
       </div>
 
-      <button onclick="nextSlide()" class="absolute right-4 z-10 w-12 h-12 rounded-full bg-black/40 hover:bg-black/80 text-white flex items-center justify-center transition backdrop-blur-sm shadow-lg">
+      <!-- 다음 버튼 -->
+      <button onclick="nextSlide()" class="absolute right-4 z-10 w-12 h-12 rounded-full bg-black/50 hover:bg-black/80 text-white flex items-center justify-center transition backdrop-blur-sm shadow-lg">
         <i data-lucide="chevron-right" class="w-7 h-7"></i>
       </button>
 
-      <!-- 하단 플로팅 배너 (문의하기 및 바로가기) -->
-      <div class="absolute bottom-5 z-10 flex items-center gap-2 bg-[#27272a]/90 backdrop-blur-md border border-[#3f3f46] px-4 py-2 rounded-full shadow-xl">
+      <!-- 하단 플로팅 바 -->
+      <div class="absolute bottom-5 z-10 flex items-center gap-3 bg-[#27272a]/90 backdrop-blur-md border border-[#3f3f46] px-5 py-2.5 rounded-full shadow-xl">
         <a href="mailto:unyconnect.info@gmail.com" class="text-xs font-bold text-white hover:text-[#FF5A1F] flex items-center gap-1.5 transition">
-          <i data-lucide="mail" class="w-4 h-4 text-[#FF5A1F]"></i> 입점 및 제휴 문의
+          <i data-lucide="mail" class="w-4 h-4 text-[#FF5A1F]"></i> unyconnect.info@gmail.com
         </a>
         <span class="text-gray-500">|</span>
-        <a href="https://bookmarkjp.com/bookmarkcreators" target="_blank" class="text-xs font-bold text-gray-300 hover:text-white transition">
-          웹앱 바로가기 ↗
+        <a href="https://bookmarkjp.com/bookmarkcreators" target="_blank" class="text-xs font-bold text-gray-300 hover:text-white flex items-center gap-1 transition">
+          북마크 크리에이터즈 <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
         </a>
       </div>
     </main>
   </div>
 
   <script>
-    // 총 슬라이드 수 및 목차 타이틀
     const totalSlides = 12;
     let currentIndex = 1;
 
@@ -126,17 +123,16 @@
           <span class="text-gray-500 font-normal">${i}</span>
         </div>
         <div class="aspect-[16/9] w-full rounded overflow-hidden bg-black/50">
-          <img src="slide-${i}.jpg" alt="썸네일 ${i}" class="w-full h-full object-cover">
+          <img src="slide-${i}.png" alt="썸네일 ${i}" class="w-full h-full object-cover">
         </div>
       `;
       thumbContainer.appendChild(card);
     }
 
-    // 슬라이드 이동 함수
+    // 슬라이드 이동 제어
     function goToSlide(index) {
       if (index < 1 || index > totalSlides) return;
       
-      // 기존 활성화 해제
       const oldThumb = document.getElementById(`thumb-${currentIndex}`);
       if (oldThumb) {
         oldThumb.className = "cursor-pointer rounded-lg p-2 border border-[#3f3f46] bg-[#27272a] hover:border-gray-500 transition duration-150";
@@ -144,13 +140,11 @@
 
       currentIndex = index;
 
-      // 메인 이미지 및 페이지 번호 갱신
       const mainImg = document.getElementById("main-slide-img");
-      mainImg.src = `slide-${currentIndex}.jpg`;
+      mainImg.src = `slide-${currentIndex}.png`;
       mainImg.alt = `슬라이드 ${currentIndex}`;
       document.getElementById("page-num").innerText = `${currentIndex} / ${totalSlides}`;
 
-      // 신규 썸네일 활성화
       const newThumb = document.getElementById(`thumb-${currentIndex}`);
       if (newThumb) {
         newThumb.className = "cursor-pointer rounded-lg p-2 border border-[#FF5A1F] bg-[#2a2a2e] transition duration-150";
@@ -166,13 +160,13 @@
       if (currentIndex < totalSlides) goToSlide(currentIndex + 1);
     }
 
-    // 키보드 좌우 방향키 탐색 지원
+    // 키보드 방향키 이동
     window.addEventListener("keydown", (e) => {
       if (e.key === "ArrowLeft") prevSlide();
       if (e.key === "ArrowRight") nextSlide();
     });
 
-    // 모바일 스와이프 터치 지원
+    // 모바일 터치 스와이프
     let touchStartX = 0;
     const viewer = document.getElementById("main-viewer");
     viewer.addEventListener("touchstart", (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
