@@ -89,7 +89,7 @@
     </main>
   </div>
 
-  <!-- 문의하기 팝업 모달 -->
+  <!-- 문의하기 입력 모달 -->
   <div id="contact-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden">
     <div class="bg-[#242427] border border-[#3f3f46] rounded-2xl w-full max-w-md p-6 relative shadow-2xl text-gray-100">
       
@@ -135,6 +135,22 @@
           문의 내용 전달하기
         </button>
       </form>
+    </div>
+  </div>
+
+  <!-- 신규 디자인: 문의 접수 완료 커스텀 모달 -->
+  <div id="success-modal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-[#242427] border border-[#3f3f46] rounded-2xl w-full max-w-sm p-6 text-center shadow-2xl relative">
+      <div class="w-14 h-14 bg-[#FF5A1F]/15 text-[#FF5A1F] rounded-full flex items-center justify-center mx-auto mb-4 border border-[#FF5A1F]/30">
+        <i data-lucide="check" class="w-8 h-8 stroke-[2.5]"></i>
+      </div>
+      <h4 class="text-lg font-bold text-white mb-2">문의가 안전하게 접수되었습니다</h4>
+      <p class="text-xs text-gray-300 leading-relaxed mb-6">
+        남겨주신 문의 내용을 확인한 후,<br>담당자가 신속하게 연락드리겠습니다.
+      </p>
+      <button onclick="closeSuccessModal()" class="w-full bg-[#FF5A1F] hover:bg-[#e04a14] text-white font-bold py-2.5 rounded-xl text-sm transition shadow-lg">
+        확인
+      </button>
     </div>
   </div>
 
@@ -195,7 +211,6 @@
       mainImg.alt = `슬라이드 ${currentIndex}`;
       document.getElementById("page-num").innerText = `${currentIndex} / ${totalSlides}`;
 
-      // 5번, 7번 슬라이드 링크 레이어 토글
       const link5 = document.getElementById("link-slide-5");
       const link7 = document.getElementById("link-slide-7");
       if (currentIndex === 5) { link5.classList.remove("hidden"); } else { link5.classList.add("hidden"); }
@@ -219,7 +234,9 @@
     // 마우스 휠 스크롤 제어
     let isWheeling = false;
     window.addEventListener("wheel", (e) => {
-      if (!document.getElementById("contact-modal").classList.contains("hidden")) return;
+      const isInputOpen = !document.getElementById("contact-modal").classList.contains("hidden");
+      const isSuccessOpen = !document.getElementById("success-modal").classList.contains("hidden");
+      if (isInputOpen || isSuccessOpen) return;
       if (e.target.closest("aside")) return;
 
       if (isWheeling) return;
@@ -236,7 +253,9 @@
 
     // 키보드 방향키 제어
     window.addEventListener("keydown", (e) => {
-      if (!document.getElementById("contact-modal").classList.contains("hidden")) return;
+      const isInputOpen = !document.getElementById("contact-modal").classList.contains("hidden");
+      const isSuccessOpen = !document.getElementById("success-modal").classList.contains("hidden");
+      if (isInputOpen || isSuccessOpen) return;
       if (e.key === "ArrowLeft" || e.key === "ArrowUp") prevSlide();
       if (e.key === "ArrowRight" || e.key === "ArrowDown") nextSlide();
     });
@@ -251,12 +270,19 @@
       if (touchEndX - touchStartX > 50) prevSlide();
     }, { passive: true });
 
-    // 모달 제어
+    // 모달 창 제어 함수
     function openModal() {
       document.getElementById("contact-modal").classList.remove("hidden");
     }
     function closeModal() {
       document.getElementById("contact-modal").classList.add("hidden");
+    }
+
+    function openSuccessModal() {
+      document.getElementById("success-modal").classList.remove("hidden");
+    }
+    function closeSuccessModal() {
+      document.getElementById("success-modal").classList.add("hidden");
     }
 
     // 구글 시트 연동 전송 처리
@@ -270,7 +296,7 @@
       submitBtn.innerText = "전송 중...";
 
       const payload = {
-        source: "회사소개서 뷰어", // 유입 출처 자동 표기
+        source: "회사소개서 뷰어",
         company: document.getElementById("company").value,
         name: document.getElementById("name").value,
         phone: document.getElementById("phone").value,
@@ -285,14 +311,14 @@
       })
       .then(res => res.json())
       .then(response => {
-        alert("문의 내용이 안전하게 접수되었습니다. 담당자가 확인 후 빠른 시일 내에 연락드리겠습니다.");
         e.target.reset();
         closeModal();
+        openSuccessModal();
       })
       .catch(err => {
-        alert("문의가 정상 접수되었습니다. 확인 후 신속히 안내해 드리겠습니다.");
         e.target.reset();
         closeModal();
+        openSuccessModal();
       })
       .finally(() => {
         submitBtn.disabled = false;
