@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>유니 커넥트(UNY CONNECT) | 회사소개서</title>
   
   <meta property="og:title" content="유니 커넥트(UNY CONNECT) 회사소개서">
@@ -19,81 +19,98 @@
     .sidebar-scroll::-webkit-scrollbar-thumb { background: #52525b; border-radius: 4px; }
   </style>
 </head>
-<body class="bg-[#18181b] text-gray-100 h-screen w-screen overflow-hidden flex flex-col">
+<body class="bg-[#141416] text-gray-100 h-screen w-screen overflow-hidden flex flex-col">
 
-  <!-- 상단 헤더 / 네비게이션 -->
-  <header class="h-14 bg-[#27272a] border-b border-[#3f3f46] px-4 flex items-center justify-between z-20 flex-shrink-0">
-    <div class="flex items-center gap-3">
-      <span class="font-extrabold text-lg tracking-tight text-white">UNY <span class="text-[#FF5A1F]">CONNECT</span></span>
-      <span class="text-xs bg-[#3f3f46] text-gray-300 px-2 py-0.5 rounded">회사소개서 2026</span>
+  <!-- 1. 상단 헤더: 모바일에서는 로고만 깔끔하게 표시 -->
+  <header class="h-12 md:h-14 bg-[#1f1f23] border-b border-[#2d2d32] px-4 flex items-center justify-between z-20 flex-shrink-0">
+    <div class="flex items-center gap-2">
+      <span class="font-extrabold text-base md:text-lg tracking-tight text-white">UNY <span class="text-[#FF5A1F]">CONNECT</span></span>
+      <span class="hidden md:inline-block text-xs bg-[#2d2d32] text-gray-300 px-2 py-0.5 rounded">회사소개서 2026</span>
     </div>
 
-    <!-- 페이지 이동 컨트롤 -->
-    <div class="flex items-center gap-2">
-      <button onclick="prevSlide()" class="p-1.5 rounded hover:bg-[#3f3f46] text-gray-300 hover:text-white transition">
+    <!-- 데스크톱용 상단 페이지 이동 컨트롤러 -->
+    <div class="hidden md:flex items-center gap-2">
+      <button onclick="prevSlide()" class="p-1.5 rounded hover:bg-[#2d2d32] text-gray-300 hover:text-white transition">
         <i data-lucide="chevron-left" class="w-5 h-5"></i>
       </button>
-      <span id="page-num" class="text-sm font-semibold text-white tracking-widest min-w-[60px] text-center">1 / 12</span>
-      <button onclick="nextSlide()" class="p-1.5 rounded hover:bg-[#3f3f46] text-gray-300 hover:text-white transition">
+      <span id="page-num-desktop" class="text-sm font-semibold text-white tracking-widest min-w-[60px] text-center">1 / 12</span>
+      <button onclick="nextSlide()" class="p-1.5 rounded hover:bg-[#2d2d32] text-gray-300 hover:text-white transition">
         <i data-lucide="chevron-right" class="w-5 h-5"></i>
       </button>
     </div>
 
-    <!-- 우측 여백 -->
-    <div class="w-12"></div>
+    <!-- 우측 여백 (데스크톱 균형용) -->
+    <div class="w-8 hidden md:block"></div>
   </header>
 
-  <!-- 메인 영역 -->
+  <!-- 2. 메인 뷰어 영역 -->
   <div class="flex-1 flex overflow-hidden">
     
-    <!-- 좌측 슬라이드 썸네일 리스트 -->
-    <aside class="w-64 bg-[#202023] border-r border-[#3f3f46] overflow-y-auto sidebar-scroll hidden md:flex flex-col p-3 gap-3 flex-shrink-0">
+    <!-- 좌측 슬라이드 썸네일 리스트 (PC 전용) -->
+    <aside class="w-64 bg-[#1a1a1d] border-r border-[#2d2d32] overflow-y-auto sidebar-scroll hidden md:flex flex-col p-3 gap-3 flex-shrink-0">
       <div class="text-xs font-bold text-gray-400 px-1 py-1 uppercase tracking-wider">Index & Slides</div>
       <div id="thumbnail-container" class="flex flex-col gap-3"></div>
     </aside>
 
-    <!-- 우측 메인 뷰어 -->
-    <main class="flex-1 bg-[#121214] relative flex items-center justify-center p-3 md:p-6 overflow-hidden select-none" id="main-viewer">
+    <!-- 우측 메인 뷰어 (PC & 모바일 반응형) -->
+    <main class="flex-1 relative flex flex-col items-center justify-center p-3 md:p-6 overflow-hidden select-none" id="main-viewer">
       
-      <!-- 이전 버튼 -->
-      <button onclick="prevSlide()" class="absolute left-4 z-10 w-12 h-12 rounded-full bg-black/50 hover:bg-black/80 text-white flex items-center justify-center transition backdrop-blur-sm shadow-lg">
+      <!-- PC 전용 좌우 플로팅 이전/다음 버튼 -->
+      <button onclick="prevSlide()" class="hidden md:flex absolute left-4 z-10 w-12 h-12 rounded-full bg-black/50 hover:bg-black/80 text-white items-center justify-center transition backdrop-blur-sm shadow-lg">
         <i data-lucide="chevron-left" class="w-7 h-7"></i>
       </button>
 
-      <!-- 슬라이드 메인 이미지 프레임 및 클릭 링크 영역 -->
-      <div class="relative w-full h-full max-w-[1400px] max-h-[850px] flex items-center justify-center">
-        <img id="main-slide-img" src="slide-1.png" alt="슬라이드 1" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl transition duration-150">
+      <!-- 슬라이드 카드 프레임 (모바일에서는 화면 폭에 맞춤) -->
+      <div class="relative w-full max-w-[1400px] flex-1 md:h-full max-h-[820px] flex items-center justify-center">
+        <img id="main-slide-img" src="slide-1.png" alt="슬라이드 1" class="max-w-full max-h-full object-contain rounded-xl shadow-2xl transition duration-150">
         
-        <!-- 슬라이드 5번용: 크리에이터 확인하기 투명 링크 영역 -->
+        <!-- 슬라이드 5번용 투명 링크 -->
         <a id="link-slide-5" href="https://lrl.kr/e3cyS" target="_blank" 
            class="hidden absolute z-20 cursor-pointer rounded border border-transparent hover:border-[#FF5A1F]/50 hover:bg-[#FF5A1F]/10 transition"
            style="left: 10%; top: 40%; width: 28%; height: 7%;" title="크리에이터 확인하기 새창열기"></a>
 
-        <!-- 슬라이드 7번용: 북마크 크리에이터즈 플랫폼 확인하기 투명 링크 영역 -->
+        <!-- 슬라이드 7번용 투명 링크 -->
         <a id="link-slide-7" href="https://bookmarkjp.com/bookmarkcreators" target="_blank" 
            class="hidden absolute z-20 cursor-pointer rounded-full border border-transparent hover:border-[#FF5A1F]/50 hover:bg-[#FF5A1F]/10 transition"
            style="left: 35%; bottom: 10%; width: 30%; height: 8%;" title="플랫폼 확인하기 새창열기"></a>
       </div>
 
-      <!-- 다음 버튼 -->
-      <button onclick="nextSlide()" class="absolute right-4 z-10 w-12 h-12 rounded-full bg-black/50 hover:bg-black/80 text-white flex items-center justify-center transition backdrop-blur-sm shadow-lg">
+      <button onclick="nextSlide()" class="hidden md:flex absolute right-4 z-10 w-12 h-12 rounded-full bg-black/50 hover:bg-black/80 text-white items-center justify-center transition backdrop-blur-sm shadow-lg">
         <i data-lucide="chevron-right" class="w-7 h-7"></i>
       </button>
 
-      <!-- 하단 플로팅 바: 문의하기 팝업 버튼 -->
-      <div class="absolute bottom-5 z-10">
-        <button onclick="openModal()" class="flex items-center gap-2 bg-[#FF5A1F] hover:bg-[#e04a14] text-white text-xs md:text-sm font-bold px-6 py-2.5 rounded-full shadow-2xl transition transform hover:scale-105">
+      <!-- 3. 모바일 전용 하단 컨트롤러 바 (주말토리 스타일) -->
+      <div class="w-full flex flex-col items-center gap-3 pt-3 pb-2 md:hidden flex-shrink-0 z-20">
+        <!-- 모바일 페이지 이동 버튼 -->
+        <div class="flex items-center gap-4 bg-[#232328] px-4 py-1.5 rounded-full border border-[#323238] shadow-md">
+          <button onclick="prevSlide()" class="w-8 h-8 rounded-full bg-[#2d2d33] active:bg-[#3f3f46] text-white flex items-center justify-center">
+            <i data-lucide="chevron-left" class="w-4 h-4"></i>
+          </button>
+          <span id="page-num-mobile" class="text-sm font-bold text-gray-200 tracking-wider min-w-[55px] text-center">1 / 12</span>
+          <button onclick="nextSlide()" class="w-8 h-8 rounded-full bg-[#2d2d33] active:bg-[#3f3f46] text-white flex items-center justify-center">
+            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <!-- 모바일 문의하기 버튼 -->
+        <button onclick="openModal()" class="w-full max-w-[280px] bg-[#FF5A1F] active:bg-[#e04a14] text-white font-bold py-2.5 rounded-full text-sm shadow-xl flex items-center justify-center gap-2">
+          <i data-lucide="mail" class="w-4 h-4"></i> 문의하기
+        </button>
+      </div>
+
+      <!-- 데스크톱용 하단 플로팅 문의하기 버튼 -->
+      <div class="hidden md:block absolute bottom-5 z-10">
+        <button onclick="openModal()" class="flex items-center gap-2 bg-[#FF5A1F] hover:bg-[#e04a14] text-white text-sm font-bold px-7 py-2.5 rounded-full shadow-2xl transition transform hover:scale-105">
           <i data-lucide="mail" class="w-4 h-4"></i> 문의하기
         </button>
       </div>
     </main>
   </div>
 
-  <!-- 문의하기 입력 모달 -->
-  <div id="contact-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+  <!-- 문의하기 모달 -->
+  <div id="contact-modal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 hidden">
     <div class="bg-[#242427] border border-[#3f3f46] rounded-2xl w-full max-w-md p-6 relative shadow-2xl text-gray-100">
       
-      <!-- 닫기 버튼 -->
       <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
@@ -138,8 +155,8 @@
     </div>
   </div>
 
-  <!-- 신규 디자인: 문의 접수 완료 커스텀 모달 -->
-  <div id="success-modal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+  <!-- 접수 완료 커스텀 모달 -->
+  <div id="success-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
     <div class="bg-[#242427] border border-[#3f3f46] rounded-2xl w-full max-w-sm p-6 text-center shadow-2xl relative">
       <div class="w-14 h-14 bg-[#FF5A1F]/15 text-[#FF5A1F] rounded-full flex items-center justify-center mx-auto mb-4 border border-[#FF5A1F]/30">
         <i data-lucide="check" class="w-8 h-8 stroke-[2.5]"></i>
@@ -175,7 +192,7 @@
       "12 Contact & 파트너십"
     ];
 
-    // 좌측 썸네일 동적 생성
+    // 좌측 썸네일 동적 생성 (PC)
     const thumbContainer = document.getElementById("thumbnail-container");
     for (let i = 1; i <= totalSlides; i++) {
       const card = document.createElement("div");
@@ -209,8 +226,12 @@
       const mainImg = document.getElementById("main-slide-img");
       mainImg.src = `slide-${currentIndex}.png`;
       mainImg.alt = `슬라이드 ${currentIndex}`;
-      document.getElementById("page-num").innerText = `${currentIndex} / ${totalSlides}`;
+      
+      // PC 및 모바일 페이지 텍스트 동기화
+      document.getElementById("page-num-desktop").innerText = `${currentIndex} / ${totalSlides}`;
+      document.getElementById("page-num-mobile").innerText = `${currentIndex} / ${totalSlides}`;
 
+      // 5번, 7번 슬라이드 링크 레이어 토글
       const link5 = document.getElementById("link-slide-5");
       const link7 = document.getElementById("link-slide-7");
       if (currentIndex === 5) { link5.classList.remove("hidden"); } else { link5.classList.add("hidden"); }
@@ -266,11 +287,11 @@
     viewer.addEventListener("touchstart", (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
     viewer.addEventListener("touchend", (e) => {
       const touchEndX = e.changedTouches[0].clientX;
-      if (touchStartX - touchEndX > 50) nextSlide();
-      if (touchEndX - touchStartX > 50) prevSlide();
+      if (touchStartX - touchEndX > 45) nextSlide();
+      if (touchEndX - touchStartX > 45) prevSlide();
     }, { passive: true });
 
-    // 모달 창 제어 함수
+    // 모달 제어 함수
     function openModal() {
       document.getElementById("contact-modal").classList.remove("hidden");
     }
@@ -285,7 +306,7 @@
       document.getElementById("success-modal").classList.add("hidden");
     }
 
-// 구글 시트 연동 전송 처리 (CORS 차단 방지 적용)
+    // 구글 시트 연동 전송 처리 (no-cors 적용)
     function handleInquirySubmit(e) {
       e.preventDefault();
       
@@ -304,7 +325,6 @@
         message: document.getElementById("message").value
       };
 
-      // no-cors 모드로 전송하여 브라우저 CORS 차단 방지
       fetch(GOOGLE_SCRIPT_URL, {
         method: "POST",
         mode: "no-cors",
@@ -331,4 +351,3 @@
   </script>
 </body>
 </html>
-
