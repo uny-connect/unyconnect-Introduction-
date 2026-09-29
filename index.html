@@ -60,19 +60,22 @@
         <i data-lucide="chevron-left" class="w-7 h-7"></i>
       </button>
 
-      <!-- 슬라이드 카드 프레임 (모바일에서는 화면 폭에 맞춤) -->
+<!-- 슬라이드 메인 이미지 프레임 및 클릭 링크 영역 -->
       <div class="relative w-full max-w-[1400px] flex-1 md:h-full max-h-[820px] flex items-center justify-center">
-        <img id="main-slide-img" src="slide-1.png" alt="슬라이드 1" class="max-w-full max-h-full object-contain rounded-xl shadow-2xl transition duration-150">
-        
-        <!-- 슬라이드 5번용 투명 링크 -->
-        <a id="link-slide-5" href="https://lrl.kr/e3cyS" target="_blank" 
-           class="hidden absolute z-20 cursor-pointer rounded border border-transparent hover:border-[#FF5A1F]/50 hover:bg-[#FF5A1F]/10 transition"
-           style="left: 10%; top: 40%; width: 28%; height: 7%;" title="크리에이터 확인하기 새창열기"></a>
+        <!-- 16:9 비율 고정 래퍼 (화면 크기가 달라져도 글자 위치에 고정) -->
+        <div class="relative inline-flex items-center justify-center max-w-full max-h-full aspect-[16/9]">
+          <img id="main-slide-img" src="slide-1.png" alt="슬라이드 1" class="w-full h-full object-contain rounded-xl shadow-2xl transition duration-150">
+          
+          <!-- 슬라이드 5번: '크리에이터 확인하기 ↗' 텍스트 영역에 정확히 밀착 -->
+          <a id="link-slide-5" href="https://lrl.kr/e3cyS" target="_blank" 
+             class="hidden absolute z-20 cursor-pointer rounded border border-transparent hover:border-[#FF5A1F] hover:bg-[#FF5A1F]/15 transition"
+             style="left: 32.2%; top: 43.5%; width: 12.5%; height: 3.2%;" title="크리에이터 확인하기 새창열기"></a>
 
-        <!-- 슬라이드 7번용 투명 링크 -->
-        <a id="link-slide-7" href="https://bookmarkjp.com/bookmarkcreators" target="_blank" 
-           class="hidden absolute z-20 cursor-pointer rounded-full border border-transparent hover:border-[#FF5A1F]/50 hover:bg-[#FF5A1F]/10 transition"
-           style="left: 35%; bottom: 10%; width: 30%; height: 8%;" title="플랫폼 확인하기 새창열기"></a>
+          <!-- 슬라이드 7번: ''북마크 크리에이터즈' 플랫폼 확인하기 ↗' 텍스트 영역에 정확히 밀착 -->
+          <a id="link-slide-7" href="https://bookmarkjp.com/bookmarkcreators" target="_blank" 
+             class="hidden absolute z-20 cursor-pointer rounded border border-transparent hover:border-[#FF5A1F] hover:bg-[#FF5A1F]/15 transition"
+             style="left: 31.3%; top: 79.2%; width: 17.5%; height: 3.5%;" title="플랫폼 확인하기 새창열기"></a>
+        </div>
       </div>
 
       <button onclick="nextSlide()" class="hidden md:flex absolute right-4 z-10 w-12 h-12 rounded-full bg-black/50 hover:bg-black/80 text-white items-center justify-center transition backdrop-blur-sm shadow-lg">
