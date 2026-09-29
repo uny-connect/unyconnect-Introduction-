@@ -39,15 +39,8 @@
       </button>
     </div>
 
-    <!-- 우측 링크 & 액션 버튼 -->
-    <div class="flex items-center gap-2">
-      <a href="https://bookmarkjp.com/bookmarkcreators" target="_blank" class="hidden sm:inline-flex items-center gap-1 text-xs bg-[#3f3f46] hover:bg-[#52525b] text-white px-3 py-1.5 rounded-lg transition font-medium">
-        크리에이터즈 <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-      </a>
-      <a href="mailto:unyconnect.info@gmail.com" class="inline-flex items-center gap-1.5 text-xs bg-[#FF5A1F] hover:bg-[#e04a14] text-white font-semibold px-3 py-1.5 rounded-lg transition shadow">
-        <i data-lucide="mail" class="w-3.5 h-3.5"></i> 문의하기
-      </a>
-    </div>
+    <!-- 우측 여백 유지 (우측 상단 버튼 제거 완료) -->
+    <div class="w-12"></div>
   </header>
 
   <!-- 메인 영역 -->
@@ -67,9 +60,19 @@
         <i data-lucide="chevron-left" class="w-7 h-7"></i>
       </button>
 
-      <!-- 슬라이드 메인 이미지 프레임 -->
-      <div class="w-full h-full max-w-[1400px] max-h-[850px] flex items-center justify-center">
+      <!-- 슬라이드 메인 이미지 프레임 및 클릭 링크 영역 -->
+      <div class="relative w-full h-full max-w-[1400px] max-h-[850px] flex items-center justify-center">
         <img id="main-slide-img" src="slide-1.png" alt="슬라이드 1" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl transition duration-150">
+        
+        <!-- 슬라이드 5번용: 크리에이터 확인하기 투명 링크 영역 -->
+        <a id="link-slide-5" href="https://lrl.kr/e3cyS" target="_blank" 
+           class="hidden absolute z-20 cursor-pointer rounded border border-transparent hover:border-[#FF5A1F]/50 hover:bg-[#FF5A1F]/10 transition"
+           style="left: 10%; top: 40%; width: 28%; height: 7%;" title="크리에이터 확인하기 새창열기"></a>
+
+        <!-- 슬라이드 7번용: 북마크 크리에이터즈 플랫폼 확인하기 투명 링크 영역 -->
+        <a id="link-slide-7" href="https://bookmarkjp.com/bookmarkcreators" target="_blank" 
+           class="hidden absolute z-20 cursor-pointer rounded-full border border-transparent hover:border-[#FF5A1F]/50 hover:bg-[#FF5A1F]/10 transition"
+           style="left: 35%; bottom: 10%; width: 30%; height: 8%;" title="플랫폼 확인하기 새창열기"></a>
       </div>
 
       <!-- 다음 버튼 -->
@@ -77,17 +80,62 @@
         <i data-lucide="chevron-right" class="w-7 h-7"></i>
       </button>
 
-      <!-- 하단 플로팅 바 -->
-      <div class="absolute bottom-5 z-10 flex items-center gap-3 bg-[#27272a]/90 backdrop-blur-md border border-[#3f3f46] px-5 py-2.5 rounded-full shadow-xl">
-        <a href="mailto:unyconnect.info@gmail.com" class="text-xs font-bold text-white hover:text-[#FF5A1F] flex items-center gap-1.5 transition">
-          <i data-lucide="mail" class="w-4 h-4 text-[#FF5A1F]"></i> unyconnect.info@gmail.com
-        </a>
-        <span class="text-gray-500">|</span>
-        <a href="https://bookmarkjp.com/bookmarkcreators" target="_blank" class="text-xs font-bold text-gray-300 hover:text-white flex items-center gap-1 transition">
-          북마크 크리에이터즈 <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-        </a>
+      <!-- 하단 플로팅 바: 문의하기 팝업 버튼 -->
+      <div class="absolute bottom-5 z-10">
+        <button onclick="openModal()" class="flex items-center gap-2 bg-[#FF5A1F] hover:bg-[#e04a14] text-white text-xs md:text-sm font-bold px-6 py-2.5 rounded-full shadow-2xl transition transform hover:scale-105">
+          <i data-lucide="mail" class="w-4 h-4"></i> 문의하기
+        </button>
       </div>
     </main>
+  </div>
+
+  <!-- 문의하기 팝업 모달 -->
+  <div id="contact-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-[#242427] border border-[#3f3f46] rounded-2xl w-full max-w-md p-6 relative shadow-2xl text-gray-100">
+      
+      <!-- 닫기 버튼 -->
+      <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="mb-5">
+        <span class="text-[#FF5A1F] font-bold text-xs uppercase tracking-wider block mb-1">INQUIRY</span>
+        <h3 class="text-xl font-bold text-white">비즈니스 제휴 및 문의</h3>
+        <p class="text-xs text-gray-400 mt-1">문의 내용을 남겨주시면 담당자가 신속히 연락드립니다.</p>
+      </div>
+
+      <form onsubmit="handleInquirySubmit(event)" class="space-y-3.5">
+        <div>
+          <label class="block text-xs font-semibold text-gray-300 mb-1">회사명 / 브랜드명 <span class="text-[#FF5A1F]">*</span></label>
+          <input type="text" id="company" required placeholder="예: 유니 컴퍼니" class="w-full bg-[#18181b] border border-[#3f3f46] rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#FF5A1F]">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-gray-300 mb-1">담당자명 <span class="text-[#FF5A1F]">*</span></label>
+            <input type="text" id="name" required placeholder="홍길동" class="w-full bg-[#18181b] border border-[#3f3f46] rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#FF5A1F]">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-300 mb-1">연락처 <span class="text-[#FF5A1F]">*</span></label>
+            <input type="tel" id="phone" required placeholder="010-0000-0000" class="w-full bg-[#18181b] border border-[#3f3f46] rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#FF5A1F]">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-gray-300 mb-1">이메일 <span class="text-[#FF5A1F]">*</span></label>
+          <input type="email" id="email" required placeholder="name@company.com" class="w-full bg-[#18181b] border border-[#3f3f46] rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#FF5A1F]">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-gray-300 mb-1">문의 내용 <span class="text-[#FF5A1F]">*</span></label>
+          <textarea id="message" rows="3" required placeholder="협업 희망 내용, 일정 등을 간략히 적어주세요." class="w-full bg-[#18181b] border border-[#3f3f46] rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#FF5A1F] resize-none"></textarea>
+        </div>
+
+        <button type="submit" class="w-full bg-[#FF5A1F] hover:bg-[#e04a14] text-white font-bold py-2.5 rounded-lg text-sm transition mt-2 shadow-lg">
+          문의 내용 전달하기
+        </button>
+      </form>
+    </div>
   </div>
 
   <script>
@@ -145,6 +193,12 @@
       mainImg.alt = `슬라이드 ${currentIndex}`;
       document.getElementById("page-num").innerText = `${currentIndex} / ${totalSlides}`;
 
+      // 특정 슬라이드 클릭 링크 보이기/숨기기
+      const link5 = document.getElementById("link-slide-5");
+      const link7 = document.getElementById("link-slide-7");
+      if (currentIndex === 5) { link5.classList.remove("hidden"); } else { link5.classList.add("hidden"); }
+      if (currentIndex === 7) { link7.classList.remove("hidden"); } else { link7.classList.add("hidden"); }
+
       const newThumb = document.getElementById(`thumb-${currentIndex}`);
       if (newThumb) {
         newThumb.className = "cursor-pointer rounded-lg p-2 border border-[#FF5A1F] bg-[#2a2a2e] transition duration-150";
@@ -160,13 +214,33 @@
       if (currentIndex < totalSlides) goToSlide(currentIndex + 1);
     }
 
-    // 키보드 방향키 이동
+    // 1. 마우스 휠 스크롤 이동 (연속 휠 제어 딜레이 포함)
+    let isWheeling = false;
+    window.addEventListener("wheel", (e) => {
+      // 팝업 모달이 열려있거나 좌측 사이드바 위에서는 뷰어 휠 전환 중지
+      if (!document.getElementById("contact-modal").classList.contains("hidden")) return;
+      if (e.target.closest("aside")) return;
+
+      if (isWheeling) return;
+      isWheeling = true;
+
+      if (e.deltaY > 20) {
+        nextSlide();
+      } else if (e.deltaY < -20) {
+        prevSlide();
+      }
+
+      setTimeout(() => { isWheeling = false; }, 300);
+    }, { passive: true });
+
+    // 2. 키보드 방향키 이동
     window.addEventListener("keydown", (e) => {
-      if (e.key === "ArrowLeft") prevSlide();
-      if (e.key === "ArrowRight") nextSlide();
+      if (!document.getElementById("contact-modal").classList.contains("hidden")) return;
+      if (e.key === "ArrowLeft" || e.key === "ArrowUp") prevSlide();
+      if (e.key === "ArrowRight" || e.key === "ArrowDown") nextSlide();
     });
 
-    // 모바일 터치 스와이프
+    // 3. 모바일 터치 스와이프
     let touchStartX = 0;
     const viewer = document.getElementById("main-viewer");
     viewer.addEventListener("touchstart", (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
@@ -175,6 +249,33 @@
       if (touchStartX - touchEndX > 50) nextSlide();
       if (touchEndX - touchStartX > 50) prevSlide();
     }, { passive: true });
+
+    // 모달 열기/닫기
+    function openModal() {
+      document.getElementById("contact-modal").classList.remove("hidden");
+    }
+    function closeModal() {
+      document.getElementById("contact-modal").classList.add("hidden");
+    }
+
+    // 모달 폼 전송 핸들러
+    function handleInquirySubmit(e) {
+      e.preventDefault();
+      const company = document.getElementById("company").value;
+      const name = document.getElementById("name").value;
+      const phone = document.getElementById("phone").value;
+      const email = document.getElementById("email").value;
+      const message = document.getElementById("message").value;
+
+      const subject = encodeURIComponent(`[UNY CONNECT 제휴 문의] ${company} - ${name}님`);
+      const body = encodeURIComponent(
+        `회사명: ${company}\n담당자명: ${name}\n연락처: ${phone}\n이메일: ${email}\n\n[문의 내용]\n${message}`
+      );
+
+      // 메일 클라이언트로 연결
+      window.location.href = `mailto:unyconnect.info@gmail.com?subject=${subject}&body=${body}`;
+      closeModal();
+    }
 
     lucide.createIcons();
   </script>
